@@ -14,7 +14,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
 app.use(express.json());
-
+// letting server know how to respond when asking for front end resources
+app.use(express.static('public'));
 
 // filterByQuery()
 function filterByQuery(query, animalsArray) {
@@ -133,6 +134,26 @@ app.post('/api/animals', (req, res) => {
     }
 });
 
+
+// getting index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+// route to animals.html
+app.get('/animals', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+// route to zookeepers.html
+app.get('/zookeepers', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
+// wildcard route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
 
 // application listening
 app.listen(PORT, () => {
